@@ -11,7 +11,10 @@ const tool: Ref<(typeof modules)[keyof typeof modules] | undefined> =
 		<div class="separator" />
 		<ul>
 			<li v-for="m in modules">
-				<button @click="tool = m" :aria-current="m === tool">
+				<button
+					@click="tool === m ? (tool = undefined) : (tool = m)"
+					:aria-current="m === tool"
+				>
 					{{ m.title }}
 				</button>
 			</li>
@@ -33,7 +36,7 @@ const tool: Ref<(typeof modules)[keyof typeof modules] | undefined> =
 	flex-direction: row;
 }
 .sidebar {
-	width: 20vw;
+	width: 300px;
 	height: 100vh;
 
 	display: flex;
@@ -73,7 +76,7 @@ const tool: Ref<(typeof modules)[keyof typeof modules] | undefined> =
 	}
 }
 .tool {
-	width: 80vw;
+	width: 100%;
 
 	header {
 		border-bottom: 2px solid var(--ctp-surface1);
