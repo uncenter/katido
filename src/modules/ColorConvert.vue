@@ -2,7 +2,7 @@
 import { ColorTranslator } from 'colortranslator';
 
 const color = ref('');
-const output: Ref<ColorTranslator | undefined | Error> = ref(undefined);
+const output: Ref<ColorTranslator | undefined> = ref(undefined);
 function update() {
 	try {
 		output.value = new ColorTranslator(color.value);
@@ -10,7 +10,7 @@ function update() {
 		try {
 			output.value = new ColorTranslator('#' + color.value);
 		} catch {
-			output.value = new Error();
+			output.value = undefined;
 		}
 	}
 }
@@ -22,6 +22,7 @@ watch(color, update);
 		<input v-model="color" />
 		<div
 			class="indicator"
+			:error="output === undefined"
 			:style="{
 				'--color': output?.HEX,
 			}"
@@ -51,10 +52,9 @@ watch(color, update);
 			</tbody>
 		</table>
 	</div>
-	<div v-else-if="output instanceof Error" class="error">Invalid color</div>
 </template>
 
-<style>
+<style lang="scss">
 section {
 	display: flex;
 	flex-direction: row;
@@ -67,13 +67,22 @@ section {
 	height: 25px;
 	border-radius: 50%;
 	background-color: var(--color);
+	border: 2px solid transparent;
+
+	&[error='true'] {
+		background-image: repeating-linear-gradient(
+			45deg,
+			transparent 0,
+			var(--ctp-red) 3px,
+			transparent 0,
+			transparent 20%
+		);
+		border: 2px solid var(--ctp-red);
+	}
 }
 code {
 	background-color: var(--ctp-mantle);
 	padding: 0.25rem;
 	border-radius: 0.1rem;
-}
-.error {
-	color: var(--ctp-red);
 }
 </style>
