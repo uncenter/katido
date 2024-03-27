@@ -73,11 +73,11 @@ section {
 		background-image: repeating-linear-gradient(
 			45deg,
 			transparent 0,
-			var(--ctp-red) 3px,
+			var(--ctp-overlay0) 3px,
 			transparent 0,
 			transparent 20%
 		);
-		border: 2px solid var(--ctp-red);
+		border: 2px solid var(--ctp-overlay0);
 	}
 }
 code {
