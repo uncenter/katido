@@ -11,7 +11,7 @@ const tool: Ref<(typeof modules)[keyof typeof modules] | undefined> =
 		<div class="separator" />
 		<ul>
 			<li v-for="m in modules">
-				<button @click="tool = m">
+				<button @click="tool = m" :aria-current="m === tool">
 					{{ m.title }}
 				</button>
 			</li>
@@ -33,7 +33,7 @@ const tool: Ref<(typeof modules)[keyof typeof modules] | undefined> =
 	flex-direction: row;
 }
 .sidebar {
-	width: 30vw;
+	width: 20vw;
 	height: 100vh;
 
 	display: flex;
@@ -64,11 +64,16 @@ const tool: Ref<(typeof modules)[keyof typeof modules] | undefined> =
 			&:hover {
 				background-color: var(--ctp-mantle);
 			}
+
+			&[aria-current='true'] {
+				color: var(--ctp-base);
+				background-color: var(--ctp-blue);
+			}
 		}
 	}
 }
 .tool {
-	width: 70vw;
+	width: 80vw;
 
 	header {
 		border-bottom: 2px solid var(--ctp-surface1);
@@ -78,6 +83,8 @@ const tool: Ref<(typeof modules)[keyof typeof modules] | undefined> =
 
 	main {
 		padding: 1rem;
+		display: flex;
+		flex-direction: column;
 	}
 }
 </style>
