@@ -1,0 +1,26 @@
+{
+	"name": "katido",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"format": "prettier --write ."
+	},
+	"dependencies": {
+		"@tauri-apps/api": "^1",
+		"@vueuse/core": "^10.9.0",
+		"vue": "^3.3.4"
+	},
+	"devDependencies": {
+		"@tauri-apps/cli": "^1",
+		"@vitejs/plugin-vue": "^5.0.4",
+		"prettier": "^3.2.5",
+		"sass": "^1.72.0",
+		"typescript": "^5.0.2",
+		"unplugin-auto-import": "^0.17.5",
+		"unplugin-turbo-console": "^1.4.1",
+		"vite": "^5.0.0"
+	}
+}
