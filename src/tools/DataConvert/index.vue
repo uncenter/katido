@@ -12,24 +12,30 @@ const parsed: Ref<unknown> = ref();
 const result: Ref<string | null> = ref('');
 
 async function run() {
-	if (text.value === '') return;
-	parsed.value = formats[input.value].parse(text.value);
+	try {
+		parsed.value = formats[input.value].parse(text.value);
 
-	const highlighter = await getHighlighterCore({
-		themes: [catppuccinLatte, catppuccinMacchiato],
-		langs: langs,
-		loadWasm: () => import('shiki/wasm'),
-	});
+		const highlighter = await getHighlighterCore({
+			themes: [catppuccinLatte, catppuccinMacchiato],
+			langs: langs,
+			loadWasm: () => import('shiki/wasm'),
+		});
 
-	if (formats[output.value].canStringify(parsed.value)) {
-		result.value = highlighter.codeToHtml(
-			formats[output.value].stringify(parsed.value),
-			{
-				lang: formats[output.value]?.lang || output.value,
-				theme: 'catppuccin-macchiato',
-			},
-		);
-	} else {
+		if (
+			text.value !== '' &&
+			formats[output.value].canStringify(parsed.value)
+		) {
+			result.value = highlighter.codeToHtml(
+				formats[output.value].stringify(parsed.value),
+				{
+					lang: formats[output.value]?.lang || output.value,
+					theme: 'catppuccin-macchiato',
+				},
+			);
+		} else {
+			result.value = null;
+		}
+	} catch {
 		result.value = null;
 	}
 }
@@ -102,11 +108,14 @@ watch(
 		border-radius: 0.25rem;
 		padding: 0.5rem 0.75rem;
 		font-size: 1rem;
-	}
-	pre {
 		display: flex;
 		height: 30vh;
+
+		&[aria-disabled='true'] {
+			opacity: 0.5;
+		}
 	}
+
 	code {
 		width: 100%;
 		overflow: scroll;
