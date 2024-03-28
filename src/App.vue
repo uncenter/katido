@@ -25,7 +25,15 @@ const tool: Ref<(typeof modules)[keyof typeof modules] | undefined> =
 			<header>
 				<span>{{ tool.title }}</span>
 			</header>
-			<main><tool.component /></main>
+			<div
+				:class="
+					Object.entries(modules).find(
+						([key, value]) => value.title === tool?.title,
+					)[0]
+				"
+			>
+				<tool.component />
+			</div>
 		</div>
 	</div>
 </template>
@@ -82,12 +90,6 @@ const tool: Ref<(typeof modules)[keyof typeof modules] | undefined> =
 		border-bottom: 2px solid var(--ctp-surface1);
 		padding-bottom: 0.5rem;
 		text-align: center;
-	}
-
-	main {
-		padding: 1rem;
-		display: flex;
-		flex-direction: column;
 	}
 }
 </style>

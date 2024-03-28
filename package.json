@@ -11,11 +11,19 @@
 	"dependencies": {
 		"@tauri-apps/api": "^1",
 		"@vueuse/core": "^10.9.0",
+		"buffer": "^6.0.3",
 		"colortranslator": "^4.1.0",
-		"vue": "^3.3.4"
+		"csv-parse": "^5.5.5",
+		"csv-stringify": "^6.4.6",
+		"ini": "^4.1.2",
+		"shiki": "^1.2.1",
+		"smol-toml": "^1.1.4",
+		"vue": "^3.3.4",
+		"yaml": "^2.4.1"
 	},
 	"devDependencies": {
 		"@tauri-apps/cli": "^1",
+		"@types/ini": "^4.1.0",
 		"@vitejs/plugin-vue": "^5.0.4",
 		"prettier": "^3.2.5",
 		"sass": "^1.72.0",

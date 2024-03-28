@@ -1,4 +1,5 @@
 :root[theme='latte'] {
+	color-scheme: light;
 	--ctp-rosewater: #dc8a78;
 	--ctp-flamingo: #dd7878;
 	--ctp-pink: #ea76cb;
@@ -27,37 +28,8 @@
 	--ctp-crust: #dce0e8;
 }
 
-/* :root[theme='frappe'] { */
-:root {
-	--ctp-rosewater: #f2d5cf;
-	--ctp-flamingo: #eebebe;
-	--ctp-pink: #f4b8e4;
-	--ctp-mauve: #ca9ee6;
-	--ctp-red: #e78284;
-	--ctp-maroon: #ea999c;
-	--ctp-peach: #ef9f76;
-	--ctp-yellow: #e5c890;
-	--ctp-green: #a6d189;
-	--ctp-teal: #81c8be;
-	--ctp-sky: #99d1db;
-	--ctp-sapphire: #85c1dc;
-	--ctp-blue: #8caaee;
-	--ctp-lavender: #babbf1;
-	--ctp-text: #c6d0f5;
-	--ctp-subtext1: #b5bfe2;
-	--ctp-subtext0: #a5adce;
-	--ctp-overlay2: #949cbb;
-	--ctp-overlay1: #838ba7;
-	--ctp-overlay0: #737994;
-	--ctp-surface2: #626880;
-	--ctp-surface1: #51576d;
-	--ctp-surface0: #414559;
-	--ctp-base: #303446;
-	--ctp-mantle: #292c3c;
-	--ctp-crust: #232634;
-}
-
 :root[theme='macchiato'] {
+	color-scheme: dark;
 	--ctp-rosewater: #f4dbd6;
 	--ctp-flamingo: #f0c6c6;
 	--ctp-pink: #f5bde6;
@@ -84,35 +56,6 @@
 	--ctp-base: #24273a;
 	--ctp-mantle: #1e2030;
 	--ctp-crust: #181926;
-}
-
-:root[theme='mocha'] {
-	--ctp-rosewater: #f5e0dc;
-	--ctp-flamingo: #f2cdcd;
-	--ctp-pink: #f5c2e7;
-	--ctp-mauve: #cba6f7;
-	--ctp-red: #f38ba8;
-	--ctp-maroon: #eba0ac;
-	--ctp-peach: #fab387;
-	--ctp-yellow: #f9e2af;
-	--ctp-green: #a6e3a1;
-	--ctp-teal: #94e2d5;
-	--ctp-sky: #89dceb;
-	--ctp-sapphire: #74c7ec;
-	--ctp-blue: #89b4fa;
-	--ctp-lavender: #b4befe;
-	--ctp-text: #cdd6f4;
-	--ctp-subtext1: #bac2de;
-	--ctp-subtext0: #a6adc8;
-	--ctp-overlay2: #9399b2;
-	--ctp-overlay1: #7f849c;
-	--ctp-overlay0: #6c7086;
-	--ctp-surface2: #585b70;
-	--ctp-surface1: #45475a;
-	--ctp-surface0: #313244;
-	--ctp-base: #1e1e2e;
-	--ctp-mantle: #181825;
-	--ctp-crust: #11111b;
 }
 
 :root {

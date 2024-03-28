@@ -2,8 +2,7 @@
 import { pluralize } from '../utils.ts';
 
 const text = ref('');
-
-const output = ref({
+const result = ref({
 	characters: 0,
 	words: 0,
 	lines: 0,
@@ -12,11 +11,11 @@ const output = ref({
 
 function count() {
 	const lines = text.value.split('\n');
-	output.value.characters = text.value.length;
-	output.value.words = lines.filter(Boolean).reduce((acc, curr) => {
+	result.value.characters = text.value.length;
+	result.value.words = lines.filter(Boolean).reduce((acc, curr) => {
 		return acc + curr.split(' ').length;
 	}, 0);
-	output.value.lines = text.value === '' ? 0 : lines.length;
+	result.value.lines = text.value === '' ? 0 : lines.length;
 }
 watch(text, count);
 </script>
@@ -25,18 +24,24 @@ watch(text, count);
 	<textarea v-model="text"></textarea>
 	<ul>
 		<li>
-			{{ output.characters }}
-			{{ pluralize('character', output.characters) }}
+			{{ result.characters }}
+			{{ pluralize('character', result.characters) }}
 		</li>
 		<li>
-			{{ output.words }}
-			{{ pluralize('word', output.words) }}
+			{{ result.words }}
+			{{ pluralize('word', result.words) }}
 		</li>
 		<li>
-			{{ output.lines }}
-			{{ pluralize('line', output.lines) }}
+			{{ result.lines }}
+			{{ pluralize('line', result.lines) }}
 		</li>
 	</ul>
 </template>
 
-<style></style>
+<style>
+.textcounter {
+	padding: 1rem;
+	display: flex;
+	flex-direction: column;
+}
+</style>
