@@ -28,22 +28,32 @@ export const formats: Record<
 		stringify: (value: unknown) =>
 			stringifyIni(value, { whitespace: true }) as string,
 		canStringify: (value: unknown) =>
-			typeof value === 'object' && value !== null,
+			typeof value === 'object' &&
+			value !== null &&
+			!Array.isArray(value),
 	},
 	csv: {
 		name: 'CSV',
-		parse: (text: string) => parseCsv(text, { delimiter: ',', trim: true }),
-		stringify: (value: unknown) => stringifyCsv(value as any),
+		parse: (text: string) => parseCsv(text, { columns: true, trim: true }),
+		stringify: (value: unknown) =>
+			stringifyCsv(value as any, { header: true }),
 		canStringify: (value: unknown) =>
-			Array.isArray(value) && value.every((v) => Array.isArray(v)),
+			Array.isArray(value) &&
+			value.every(
+				(v) => typeof v === 'object' && v !== null && !Array.isArray(v),
+			),
 	},
 	tsv: {
 		name: 'TSV',
-		parse: (text: string) => parseCsv(text, { delimiter: '\t' }),
+		parse: (text: string) =>
+			parseCsv(text, { delimiter: '\t', columns: true, trim: true }),
 		stringify: (value: unknown) =>
-			stringifyCsv(value as any, { delimiter: '\t' }),
+			stringifyCsv(value as any, { delimiter: '\t', header: true }),
 		canStringify: (value: unknown) =>
-			Array.isArray(value) && value.every((v) => Array.isArray(v)),
+			Array.isArray(value) &&
+			value.every(
+				(v) => typeof v === 'object' && v !== null && !Array.isArray(v),
+			),
 		lang: 'csv',
 	},
 	toml: {
