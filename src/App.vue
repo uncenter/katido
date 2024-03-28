@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import modules from './modules';
+import tools from './tools';
 
-const tool: Ref<(typeof modules)[keyof typeof modules] | undefined> =
-	shallowRef(undefined);
+type Tool = keyof typeof tools;
+
+const tool: Ref<Tool | undefined> = useStorage('tool', undefined);
+const ToolComponent = computed(() => tools[tool.value as Tool].component);
 </script>
 
 <template>
@@ -10,12 +12,12 @@ const tool: Ref<(typeof modules)[keyof typeof modules] | undefined> =
 		<input placeholder="Search..." />
 		<div class="separator" />
 		<ul>
-			<li v-for="m in modules">
+			<li v-for="(t, key) in tools">
 				<button
-					@click="tool === m ? (tool = undefined) : (tool = m)"
-					:aria-current="m === tool"
+					@click="tool === key ? (tool = undefined) : (tool = key)"
+					:aria-current="key === tool"
 				>
-					{{ m.title }}
+					{{ t.title }}
 				</button>
 			</li>
 		</ul>
@@ -23,16 +25,10 @@ const tool: Ref<(typeof modules)[keyof typeof modules] | undefined> =
 	<div class="tool">
 		<div v-if="tool !== undefined">
 			<header>
-				<span>{{ tool.title }}</span>
+				<span>{{ tools[tool].title }}</span>
 			</header>
-			<div
-				:class="
-					Object.entries(modules).find(
-						([key, value]) => value.title === tool?.title,
-					)[0]
-				"
-			>
-				<tool.component />
+			<div :class="tool">
+				<ToolComponent />
 			</div>
 		</div>
 	</div>
@@ -93,3 +89,4 @@ const tool: Ref<(typeof modules)[keyof typeof modules] | undefined> =
 	}
 }
 </style>
+./tools

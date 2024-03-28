@@ -1,6 +1,6 @@
-import ColorConvert from './modules/ColorConvert.vue';
-import TextCounter from './modules/TextCounter.vue';
-import DataConvert from './modules/DataConvert/index.vue';
+import ColorConvert from './tools/ColorConvert.vue';
+import TextCounter from './tools/TextCounter.vue';
+import DataConvert from './tools/DataConvert/index.vue';
 
 export default {
 	textcounter: {
