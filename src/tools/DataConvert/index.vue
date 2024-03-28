@@ -7,9 +7,13 @@ import catppuccinMacchiato from 'shiki/themes/catppuccin-macchiato.mjs';
 
 const input: Ref<keyof typeof formats> = ref('json');
 const output: Ref<keyof typeof formats> = ref('yaml');
+
 const text = ref('');
 const parsed: Ref<unknown> = ref();
+const stringified = ref('');
 const result: Ref<string | null> = ref('');
+
+const { copy, copied } = useClipboard({ source: text });
 
 async function run() {
 	try {
@@ -25,13 +29,11 @@ async function run() {
 			text.value !== '' &&
 			formats[output.value].canStringify(parsed.value)
 		) {
-			result.value = highlighter.codeToHtml(
-				formats[output.value].stringify(parsed.value),
-				{
-					lang: formats[output.value]?.lang || output.value,
-					theme: 'catppuccin-macchiato',
-				},
-			);
+			stringified.value = formats[output.value].stringify(parsed.value);
+			result.value = highlighter.codeToHtml(stringified.value, {
+				lang: formats[output.value]?.lang || output.value,
+				theme: 'catppuccin-macchiato',
+			});
 		} else {
 			result.value = null;
 		}
@@ -52,25 +54,33 @@ watch(
 
 <template>
 	<section>
-		<select v-model="input">
-			<option v-for="(format, key) in formats" :value="key">
-				{{ format.name }}
-			</option>
-		</select>
+		<div class="toolbar">
+			<select v-model="input">
+				<option v-for="(format, key) in formats" :value="key">
+					{{ format.name }}
+				</option>
+			</select>
+		</div>
 		<textarea v-model="text"></textarea>
 	</section>
 	<section>
-		<select v-model="output">
-			<option
-				v-for="(format, key) in formats"
-				:value="key"
-				:disabled="text !== '' && !format.canStringify(parsed)"
-			>
-				{{ format.name }}
-			</option>
-		</select>
-		<div v-if="result !== null" v-html="result"></div>
-		<div v-else aria-disabled="true"></div>
+		<div class="toolbar">
+			<button @click="copy(stringified)">
+				<span v-if="!copied">Copy</span>
+				<span v-else>Copied!</span>
+			</button>
+			<select v-model="output">
+				<option
+					v-for="(format, key) in formats"
+					:value="key"
+					:disabled="text !== '' && !format.canStringify(parsed)"
+				>
+					{{ format.name }}
+				</option>
+			</select>
+		</div>
+		<div class="output" v-if="result !== null" v-html="result"></div>
+		<div class="output" v-else aria-disabled="true"></div>
 	</section>
 </template>
 
@@ -89,19 +99,27 @@ watch(
 
 	select {
 		width: fit-content;
-		align-self: flex-end;
 		background-color: var(--ctp-mantle);
 		color: var(--ctp-text);
 		border: 1px solid var(--ctp-surface0);
 		border-radius: 0.25rem;
 		padding: 0.25rem;
 	}
+
+	div.toolbar {
+		align-self: flex-end;
+		display: flex;
+		flex-direction: row;
+		gap: 0.5rem;
+	}
+
 	textarea {
 		width: auto;
 		height: 30vh;
 		resize: none;
 	}
-	div {
+
+	div.output {
 		background-color: var(--ctp-base);
 		color: var(--ctp-text);
 		border: 1px solid var(--ctp-surface0);
@@ -115,7 +133,10 @@ watch(
 			opacity: 0.5;
 		}
 	}
-
+	pre {
+		display: flex;
+		width: 100%;
+	}
 	code {
 		width: 100%;
 		overflow: scroll;
