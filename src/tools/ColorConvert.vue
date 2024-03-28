@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ColorTranslator } from 'colortranslator';
 
-const color = ref('');
+const color = useStorage('colorconvert__color', '');
 const result: Ref<ColorTranslator | undefined> = ref(undefined);
 function update() {
 	try {

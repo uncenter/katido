@@ -5,8 +5,8 @@ import { getHighlighterCore } from 'shiki/core';
 import catppuccinLatte from 'shiki/themes/catppuccin-latte.mjs';
 import catppuccinMacchiato from 'shiki/themes/catppuccin-macchiato.mjs';
 
-const input: Ref<keyof typeof formats> = ref('ini');
-const output: Ref<keyof typeof formats> = ref('json');
+const input: Ref<keyof typeof formats> = ref('json');
+const output: Ref<keyof typeof formats> = ref('yaml');
 const text = ref('');
 const result = ref('');
 

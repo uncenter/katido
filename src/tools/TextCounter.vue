@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { pluralize } from '../utils.ts';
 
-const text = ref('');
+const text = useStorage('textcounter__text', '');
 const result = ref({
 	characters: 0,
 	words: 0,
