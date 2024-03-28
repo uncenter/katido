@@ -8,22 +8,30 @@ import catppuccinMacchiato from 'shiki/themes/catppuccin-macchiato.mjs';
 const input: Ref<keyof typeof formats> = ref('json');
 const output: Ref<keyof typeof formats> = ref('yaml');
 const text = ref('');
-const result = ref('');
+const parsed: Ref<unknown> = ref();
+const result: Ref<string | null> = ref('');
 
 async function run() {
+	if (text.value === '') return;
+	parsed.value = formats[input.value].parse(text.value);
+
 	const highlighter = await getHighlighterCore({
 		themes: [catppuccinLatte, catppuccinMacchiato],
 		langs: langs,
 		loadWasm: () => import('shiki/wasm'),
 	});
 
-	result.value = highlighter.codeToHtml(
-		formats[output.value].stringify(formats[input.value].parse(text.value)),
-		{
-			lang: formats[output.value]?.lang || output.value,
-			theme: 'catppuccin-macchiato',
-		},
-	);
+	if (formats[output.value].canStringify(parsed.value)) {
+		result.value = highlighter.codeToHtml(
+			formats[output.value].stringify(parsed.value),
+			{
+				lang: formats[output.value]?.lang || output.value,
+				theme: 'catppuccin-macchiato',
+			},
+		);
+	} else {
+		result.value = null;
+	}
 }
 
 watch(
@@ -47,11 +55,16 @@ watch(
 	</section>
 	<section>
 		<select v-model="output">
-			<option v-for="(format, key) in formats" :value="key">
+			<option
+				v-for="(format, key) in formats"
+				:value="key"
+				:disabled="text !== '' && !format.canStringify(parsed)"
+			>
 				{{ format.name }}
 			</option>
 		</select>
-		<div v-html="result"></div>
+		<div v-if="result !== null" v-html="result"></div>
+		<div v-else aria-disabled="true"></div>
 	</section>
 </template>
 
@@ -82,7 +95,7 @@ watch(
 		height: 30vh;
 		resize: none;
 	}
-	div:has(pre) {
+	div {
 		background-color: var(--ctp-base);
 		color: var(--ctp-text);
 		border: 1px solid var(--ctp-surface0);

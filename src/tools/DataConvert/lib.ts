@@ -18,6 +18,7 @@ export const formats: Record<
 		name: string;
 		parse: (text: string) => unknown;
 		stringify: (value: unknown) => string;
+		canStringify: (value: unknown) => boolean;
 		lang?: string;
 	}
 > = {
@@ -26,32 +27,45 @@ export const formats: Record<
 		parse: (text: string) => parseIni(text),
 		stringify: (value: unknown) =>
 			stringifyIni(value, { whitespace: true }) as string,
+		canStringify: (value: unknown) =>
+			typeof value === 'object' && value !== null,
 	},
 	csv: {
 		name: 'CSV',
 		parse: (text: string) => parseCsv(text, { delimiter: ',', trim: true }),
 		stringify: (value: unknown) => stringifyCsv(value as any),
+		canStringify: (value: unknown) =>
+			Array.isArray(value) && value.every((v) => Array.isArray(v)),
 	},
 	tsv: {
 		name: 'TSV',
 		parse: (text: string) => parseCsv(text, { delimiter: '\t' }),
 		stringify: (value: unknown) =>
 			stringifyCsv(value as any, { delimiter: '\t' }),
+		canStringify: (value: unknown) =>
+			Array.isArray(value) && value.every((v) => Array.isArray(v)),
 		lang: 'csv',
 	},
 	toml: {
 		name: 'TOML',
 		parse: (text: string) => parseToml(text),
 		stringify: (value: unknown) => stringifyToml(value),
+		canStringify: (value: unknown) =>
+			typeof value === 'object' &&
+			value !== null &&
+			!Array.isArray(value),
 	},
 	yaml: {
 		name: 'YAML',
 		parse: (text: string) => parseYaml(text),
 		stringify: (value: unknown) => stringifyYaml(value),
+		canStringify: (value: unknown) =>
+			typeof value === 'object' && value !== null,
 	},
 	json: {
 		name: 'JSON',
 		parse: (text: string) => JSON.parse(text),
 		stringify: (value: unknown) => JSON.stringify(value, undefined, 2),
+		canStringify: () => true,
 	},
 };
