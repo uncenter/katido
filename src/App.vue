@@ -46,7 +46,7 @@ const ToolComponent = computed(() => tools[tool.value as Tool].component);
 	display: flex;
 	flex-direction: column;
 
-	border-right: 2px solid var(--ctp-surface1);
+	border-right: 1px solid var(--ctp-surface1);
 
 	input {
 		margin: 1rem;
@@ -54,7 +54,7 @@ const ToolComponent = computed(() => tools[tool.value as Tool].component);
 
 	.separator {
 		width: 100%;
-		height: 2px;
+		height: 1px;
 		background-color: var(--ctp-surface1);
 	}
 
@@ -88,10 +88,11 @@ const ToolComponent = computed(() => tools[tool.value as Tool].component);
 	width: 100%;
 
 	header {
-		border-bottom: 2px solid var(--ctp-surface1);
+		border-bottom: 1px solid var(--ctp-surface1);
 		padding-bottom: 1rem;
 		padding-top: 1rem;
 		text-align: center;
+		font-weight: 600;
 	}
 }
 </style>
