@@ -1,49 +1,59 @@
 <script setup lang="ts">
+import { set, get } from '@vueuse/core';
 import { formats, langs } from './lib';
 
 import { getHighlighterCore } from 'shiki/core';
-import catppuccinLatte from 'shiki/themes/catppuccin-latte.mjs';
 import catppuccinMacchiato from 'shiki/themes/catppuccin-macchiato.mjs';
 
-const input: Ref<keyof typeof formats> = ref('json');
-const output: Ref<keyof typeof formats> = ref('yaml');
+const inputFormat: Ref<keyof typeof formats> = useStorage(
+	'dataconvert__input-format',
+	'json',
+);
+const outputFormat: Ref<keyof typeof formats> = useStorage(
+	'dataconvert__output-format',
+	'yaml',
+);
 
-const text = ref('');
-const parsed: Ref<unknown> = ref();
+const text = useStorage('dataconvert__text', '');
+const parsed = ref();
 const stringified = ref('');
-const result: Ref<string | null> = ref('');
+const highlighted = ref('');
 
 const { copy, copied } = useClipboard({ source: text });
 
 async function run() {
 	try {
-		parsed.value = formats[input.value].parse(text.value);
+		set(parsed, formats[get(inputFormat)].parse(get(text)));
 
 		const highlighter = await getHighlighterCore({
-			themes: [catppuccinLatte, catppuccinMacchiato],
+			themes: [catppuccinMacchiato],
 			langs: langs,
 			loadWasm: () => import('shiki/wasm'),
 		});
 
 		if (
 			text.value !== '' &&
-			formats[output.value].canStringify(parsed.value)
+			formats[get(outputFormat)].canStringify(get(parsed))
 		) {
-			stringified.value = formats[output.value].stringify(parsed.value);
-			result.value = highlighter.codeToHtml(stringified.value, {
-				lang: formats[output.value]?.lang || output.value,
-				theme: 'catppuccin-macchiato',
-			});
+			set(stringified, formats[get(outputFormat)].stringify(get(parsed)));
+
+			set(
+				highlighted,
+				highlighter.codeToHtml(get(stringified), {
+					lang: formats[get(outputFormat)]?.lang || get(outputFormat),
+					theme: 'catppuccin-macchiato',
+				}),
+			);
 		} else {
-			result.value = null;
+			set(highlighted, null);
 		}
 	} catch {
-		result.value = null;
+		set(highlighted, null);
 	}
 }
 
 watch(
-	[text, input, output],
+	[text, inputFormat, outputFormat],
 	(n, o) => {
 		const changed = o !== n;
 		if (changed) run();
@@ -55,7 +65,7 @@ watch(
 <template>
 	<section>
 		<div class="toolbar">
-			<select v-model="input">
+			<select v-model="inputFormat">
 				<option v-for="(format, key) in formats" :value="key">
 					{{ format.name }}
 				</option>
@@ -69,7 +79,7 @@ watch(
 				<span v-if="!copied">Copy</span>
 				<span v-else>Copied!</span>
 			</button>
-			<select v-model="output">
+			<select v-model="outputFormat">
 				<option
 					v-for="(format, key) in formats"
 					:value="key"
@@ -79,7 +89,11 @@ watch(
 				</option>
 			</select>
 		</div>
-		<div class="output" v-if="result !== null" v-html="result"></div>
+		<div
+			class="output"
+			v-if="highlighted !== null"
+			v-html="highlighted"
+		></div>
 		<div class="output" v-else aria-disabled="true"></div>
 	</section>
 </template>

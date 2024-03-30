@@ -1,52 +1,55 @@
 <script setup lang="ts">
+import { set, get } from '@vueuse/core';
 import { ColorTranslator } from 'colortranslator';
 
-const color = useStorage('colorconvert__color', '');
-const result: Ref<ColorTranslator | undefined> = ref(undefined);
+const input = useStorage('colorconvert__color', '');
+const color: Ref<ColorTranslator | undefined> = ref();
+
 function update() {
 	try {
-		result.value = new ColorTranslator(color.value);
+		set(color, new ColorTranslator(get(input)));
 	} catch {
 		try {
-			result.value = new ColorTranslator('#' + color.value);
+			set(color, new ColorTranslator('#' + get(input)));
 		} catch {
-			result.value = undefined;
+			set(color, undefined);
 		}
 	}
 }
-watch(color, update);
+
+watch(input, update);
 </script>
 
 <template>
 	<section>
-		<input v-model="color" />
+		<input v-model="input" />
 		<div
 			class="indicator"
-			:error="result === undefined"
+			:empty="color === undefined"
 			:style="{
-				'--color': result?.HEX,
+				'--color': color?.HEX,
 			}"
 		></div>
 	</section>
-	<div v-if="result instanceof ColorTranslator">
+	<div v-if="color instanceof ColorTranslator">
 		<table>
 			<tbody>
 				<tr>
 					<th scope="row">Hex</th>
 					<td>
-						<code>{{ result.HEX }}</code>
+						<code>{{ color.HEX }}</code>
 					</td>
 				</tr>
 				<tr>
 					<th scope="row">HSL</th>
 					<td>
-						<code>{{ result.HSL }}</code>
+						<code>{{ color.HSL }}</code>
 					</td>
 				</tr>
 				<tr>
 					<th scope="row">RGB</th>
 					<td>
-						<code>{{ result.RGB }}</code>
+						<code>{{ color.RGB }}</code>
 					</td>
 				</tr>
 			</tbody>
@@ -75,7 +78,7 @@ watch(color, update);
 		background-color: var(--color);
 		border: 2px solid transparent;
 
-		&[error='true'] {
+		&[empty='true'] {
 			background-image: repeating-linear-gradient(
 				45deg,
 				transparent 0,

@@ -1,22 +1,27 @@
 <script setup lang="ts">
+import { get, set } from '@vueuse/core';
 import { pluralize } from '../utils.ts';
 
 const text = useStorage('textcounter__text', '');
-const result = ref({
+
+const counts = ref({
 	characters: 0,
 	words: 0,
 	lines: 0,
-	sentences: 0,
 });
 
 function count() {
-	const lines = text.value.split('\n');
-	result.value.characters = text.value.length;
-	result.value.words = lines.filter(Boolean).reduce((acc, curr) => {
-		return acc + curr.split(' ').length;
-	}, 0);
-	result.value.lines = text.value === '' ? 0 : lines.length;
+	const lines = get(text).split('\n');
+
+	set(counts, {
+		characters: get(text).length,
+		words: lines.filter(Boolean).reduce((acc, curr) => {
+			return acc + curr.split(' ').length;
+		}, 0),
+		lines: get(text) === '' ? 0 : lines.length,
+	});
 }
+
 watch(text, count);
 </script>
 
@@ -24,16 +29,16 @@ watch(text, count);
 	<textarea v-model="text"></textarea>
 	<ul>
 		<li>
-			{{ result.characters }}
-			{{ pluralize('character', result.characters) }}
+			{{ counts.characters }}
+			{{ pluralize('character', counts.characters) }}
 		</li>
 		<li>
-			{{ result.words }}
-			{{ pluralize('word', result.words) }}
+			{{ counts.words }}
+			{{ pluralize('word', counts.words) }}
 		</li>
 		<li>
-			{{ result.lines }}
-			{{ pluralize('line', result.lines) }}
+			{{ counts.lines }}
+			{{ pluralize('line', counts.lines) }}
 		</li>
 	</ul>
 </template>
