@@ -62,11 +62,16 @@ const ToolComponent = computed(() => tools[tool.value as Tool].component);
 		list-style-type: none;
 		padding: 0.5rem;
 
+		li {
+			padding-top: 0.25rem;
+		}
+
 		button {
 			width: 100%;
 			margin-right: 0.25rem;
 			text-align: left;
 			background-color: var(--ctp-base);
+			border: none;
 
 			&:hover {
 				background-color: var(--ctp-mantle);
@@ -84,9 +89,9 @@ const ToolComponent = computed(() => tools[tool.value as Tool].component);
 
 	header {
 		border-bottom: 2px solid var(--ctp-surface1);
-		padding-bottom: 0.5rem;
+		padding-bottom: 1rem;
+		padding-top: 1rem;
 		text-align: center;
 	}
 }
 </style>
-./tools
