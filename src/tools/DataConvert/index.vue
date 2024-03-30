@@ -65,6 +65,14 @@ watch(
 <template>
 	<section>
 		<div class="toolbar">
+			<button
+				@click="
+					[inputFormat, outputFormat] = [outputFormat, inputFormat];
+					text = stringified;
+				"
+			>
+				Switch
+			</button>
 			<select v-model="inputFormat">
 				<option v-for="(format, key) in formats" :value="key">
 					{{ format.name }}
