@@ -1,6 +1,7 @@
 import ColorConvert from './tools/ColorConvert.vue';
 import TextCounter from './tools/TextCounter.vue';
 import DataConvert from './tools/DataConvert/index.vue';
+import LoremIpsum from './tools/LoremIpsum.vue';
 
 export default {
 	textcounter: {
@@ -14,5 +15,9 @@ export default {
 	dataconvert: {
 		title: 'Data Convert',
 		component: DataConvert,
+	},
+	loremipsum: {
+		title: 'Lorem Ipsum Generator',
+		component: LoremIpsum,
 	},
 } as Record<string, { title: string; component: unknown }>;

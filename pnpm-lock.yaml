@@ -26,6 +26,9 @@ dependencies:
   ini:
     specifier: ^4.1.2
     version: 4.1.2
+  lorem-ipsum:
+    specifier: ^2.0.8
+    version: 2.0.8
   shiki:
     specifier: ^1.2.1
     version: 1.2.1
@@ -747,6 +750,11 @@ packages:
     resolution: {integrity: sha512-bwa5awaMnQ6dpm9D3nbsFwUr6x6FrTKmxPdolNtSYfxCNR7ZM93GG1OF5Y3Sy1LvYdalb3riKC9uTn0X5NB36g==}
     dev: false
 
+  /commander@9.5.0:
+    resolution: {integrity: sha512-KRs7WVDKg86PWiuAqhDrAQnTXZKraVcCc6vFdL14qrZ/DcWwuRo7VoiYXalXO7S5GKpqYiVEwCbgFDfxNHKJBQ==}
+    engines: {node: ^12.20.0 || >=14}
+    dev: false
+
   /consola@3.2.3:
     resolution: {integrity: sha512-I5qxpzLv+sJhTVEoLYNcTW+bThDCPsit0vLNKShZx6rLtpilNpmmeTPaeqJb9ZE9dV3DGaeby6Vuhrw38WjeyQ==}
     engines: {node: ^14.18.0 || >=16.10.0}
@@ -1011,6 +1019,14 @@ packages:
       mlly: 1.6.1
       pkg-types: 1.0.3
     dev: true
+
+  /lorem-ipsum@2.0.8:
+    resolution: {integrity: sha512-5RIwHuCb979RASgCJH0VKERn9cQo/+NcAi2BMe9ddj+gp7hujl6BI+qdOG4nVsLDpwWEJwTVYXNKP6BGgbcoGA==}
+    engines: {node: '>= 8.x', npm: '>= 5.x'}
+    hasBin: true
+    dependencies:
+      commander: 9.5.0
+    dev: false
 
   /magic-string@0.30.8:
     resolution: {integrity: sha512-ISQTe55T2ao7XtlAStud6qwYPZjE4GK1S/BeVPus4jrq6JuOnQ00YKQC581RWhR122W7msZV263KzVeLoqidyQ==}
