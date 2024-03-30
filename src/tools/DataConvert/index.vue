@@ -119,15 +119,6 @@ watch(
 		gap: 1rem;
 	}
 
-	select {
-		width: fit-content;
-		background-color: var(--ctp-mantle);
-		color: var(--ctp-text);
-		border: 1px solid var(--ctp-surface0);
-		border-radius: 0.25rem;
-		padding: 0.25rem;
-	}
-
 	div.toolbar {
 		align-self: flex-end;
 		display: flex;

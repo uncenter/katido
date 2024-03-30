@@ -91,6 +91,7 @@ textarea {
 	border-radius: 0.25rem;
 	padding: 0.5rem 0.75rem;
 	font-size: 1rem;
+	resize: none;
 }
 
 input::placeholder,
@@ -101,4 +102,13 @@ textarea::placeholder {
 input:focus-visible,
 textarea:focus-visible {
 	outline: var(--ctp-mauve) solid 2px;
+}
+
+select {
+	width: fit-content;
+	background-color: var(--ctp-mantle);
+	color: var(--ctp-text);
+	border: 1px solid var(--ctp-surface0);
+	border-radius: 0.25rem;
+	padding: 0.25rem;
 }
