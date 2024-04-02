@@ -40,7 +40,7 @@ async function run() {
 			set(
 				highlighted,
 				highlighter.codeToHtml(get(stringified), {
-					lang: formats[get(outputFormat)]?.lang || get(outputFormat),
+					lang: get(outputFormat),
 					theme: 'catppuccin-macchiato',
 				}),
 			);

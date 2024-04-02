@@ -6,11 +6,12 @@ import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
 
 import iniLang from 'shiki/langs/ini.mjs';
 import csvLang from 'shiki/langs/csv.mjs';
+import tsvLang from 'shiki/langs/tsv.mjs';
 import tomlLang from 'shiki/langs/toml.mjs';
 import yamlLang from 'shiki/langs/yaml.mjs';
 import jsonLang from 'shiki/langs/json.mjs';
 
-export const langs = [iniLang, csvLang, tomlLang, yamlLang, jsonLang];
+export const langs = [iniLang, csvLang, tsvLang, tomlLang, yamlLang, jsonLang];
 
 export const formats: Record<
 	string,
@@ -19,7 +20,6 @@ export const formats: Record<
 		parse: (text: string) => unknown;
 		stringify: (value: unknown) => string;
 		canStringify: (value: unknown) => boolean;
-		lang?: string;
 	}
 > = {
 	ini: {
@@ -34,7 +34,8 @@ export const formats: Record<
 	},
 	csv: {
 		name: 'CSV',
-		parse: (text: string) => parseCsv(text, { columns: true, trim: true }),
+		parse: (text: string) =>
+			parseCsv(text.trim(), { columns: true, trim: true }),
 		stringify: (value: unknown) =>
 			stringifyCsv(value as any, { header: true }),
 		canStringify: (value: unknown) =>
@@ -46,7 +47,11 @@ export const formats: Record<
 	tsv: {
 		name: 'TSV',
 		parse: (text: string) =>
-			parseCsv(text, { delimiter: '\t', columns: true, trim: true }),
+			parseCsv(text.trim(), {
+				delimiter: '\t',
+				columns: true,
+				trim: true,
+			}),
 		stringify: (value: unknown) =>
 			stringifyCsv(value as any, { delimiter: '\t', header: true }),
 		canStringify: (value: unknown) =>
