@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import type { LoremUnit } from 'lorem-ipsum/types/src/constants/units';
+
 import { get, set } from '@vueuse/core';
 import { loremIpsum } from 'lorem-ipsum';
-import { LoremUnit } from 'lorem-ipsum/types/src/constants/units';
 
 const unit = useStorage('loremipsum__unit', 'paragraphs') as Ref<LoremUnit>;
 const count = useStorage('loremipsum__count', 2);
@@ -34,6 +35,7 @@ watch([unit, count], update);
 			<option value="sentences">sentences</option>
 			<option value="paragraphs">paragraphs</option>
 		</select>
+		<button @click="update">Generate</button>
 	</section>
 	<textarea v-model="output" readonly="true"></textarea>
 </template>
