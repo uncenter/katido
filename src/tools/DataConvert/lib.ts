@@ -14,7 +14,7 @@ import jsonLang from 'shiki/langs/json.mjs';
 export const langs = [iniLang, csvLang, tsvLang, tomlLang, yamlLang, jsonLang];
 
 export const formats: Record<
-	string,
+	Format,
 	{
 		name: string;
 		parse: (text: string) => unknown;
@@ -59,7 +59,6 @@ export const formats: Record<
 			value.every(
 				(v) => typeof v === 'object' && v !== null && !Array.isArray(v),
 			),
-		lang: 'csv',
 	},
 	toml: {
 		name: 'TOML',
@@ -70,7 +69,7 @@ export const formats: Record<
 			value !== null &&
 			!Array.isArray(value),
 	},
-	yaml: {
+	yml: {
 		name: 'YAML',
 		parse: (text: string) => parseYaml(text),
 		stringify: (value: unknown) => stringifyYaml(value),
@@ -84,3 +83,5 @@ export const formats: Record<
 		canStringify: () => true,
 	},
 };
+
+export type Format = 'ini' | 'csv' | 'tsv' | 'toml' | 'yml' | 'json';

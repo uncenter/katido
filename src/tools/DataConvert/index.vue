@@ -1,18 +1,40 @@
 <script setup lang="ts">
 import { set, get } from '@vueuse/core';
-import { formats, langs } from './lib';
+import { formats, langs, type Format } from './lib';
 
 import { getHighlighterCore } from 'shiki/core';
 import catppuccinMacchiato from 'shiki/themes/catppuccin-macchiato.mjs';
 
-const inputFormat: Ref<keyof typeof formats> = useStorage(
+const inputFormat = useStorage(
 	'dataconvert__input-format',
 	'json',
-);
-const outputFormat: Ref<keyof typeof formats> = useStorage(
+) as Ref<Format>;
+const outputFormat = useStorage(
 	'dataconvert__output-format',
 	'yaml',
-);
+) as Ref<Format>;
+
+const { open, onChange } = useFileDialog({
+	accept: Object.keys(formats)
+		.map((f) => '.' + f)
+		.join(','),
+	multiple: false,
+	directory: false,
+});
+
+onChange(async (files) => {
+	const file = (files as FileList)[0];
+	text.value = await file.text();
+	const exts = file.name.toLowerCase().split('.').reverse() as Format[];
+	if (exts.length > 1 && formats[exts[0]]) {
+		inputFormat.value = exts[0];
+	}
+	run();
+});
+
+const fs = useFileSystemAccess({
+	dataType: 'Text',
+});
 
 const text = useStorage('dataconvert__text', '');
 const parsed = ref();
@@ -65,10 +87,16 @@ watch(
 <template>
 	<section>
 		<div class="toolbar">
+			<button @click="() => open()">Upload</button>
 			<button
 				@click="
-					[inputFormat, outputFormat] = [outputFormat, inputFormat];
-					text = stringified;
+					() => {
+						[inputFormat, outputFormat] = [
+							outputFormat,
+							inputFormat,
+						];
+						text = stringified;
+					}
 				"
 			>
 				Switch
@@ -83,6 +111,19 @@ watch(
 	</section>
 	<section>
 		<div class="toolbar">
+			<button
+				@click="
+					() => {
+						fs.data.value = stringified;
+
+						fs.saveAs({
+							suggestedName: 'Untitled.' + outputFormat,
+						});
+					}
+				"
+			>
+				Download
+			</button>
 			<button @click="copy(stringified)">
 				<span v-if="!copied">Copy</span>
 				<span v-else>Copied!</span>
