@@ -2,6 +2,16 @@
 import { get, set } from '@vueuse/core';
 import { pluralize } from '../utils.ts';
 
+const { open, onChange } = useFileDialog({
+	accept: 'text/*',
+	multiple: false,
+	directory: false,
+});
+
+onChange(async (files) => {
+	text.value = await (files as FileList)[0].text();
+});
+
 const text = useStorage('textcounter__text', '');
 
 const counts = ref({
@@ -26,6 +36,7 @@ watch(text, count);
 </script>
 
 <template>
+	<button @click="() => open()">Load file</button>
 	<textarea v-model="text"></textarea>
 	<ul>
 		<li>
@@ -48,5 +59,11 @@ watch(text, count);
 	padding: 1rem;
 	display: flex;
 	flex-direction: column;
+
+	gap: 2rem;
+
+	textarea {
+		height: 50vh;
+	}
 }
 </style>
