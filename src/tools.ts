@@ -3,21 +3,25 @@ import TextCounter from './tools/TextCounter.vue';
 import DataConvert from './tools/DataConvert/index.vue';
 import LoremIpsum from './tools/LoremIpsum.vue';
 
-export default {
-	textcounter: {
+export default [
+	{
 		title: 'Text Counter',
+		id: 'textcounter',
 		component: TextCounter,
 	},
-	colorconvert: {
+	{
 		title: 'Color Convert',
+		id: 'colorconvert',
 		component: ColorConvert,
 	},
-	dataconvert: {
+	{
 		title: 'Data Convert',
+		id: 'dataconvert',
 		component: DataConvert,
 	},
-	loremipsum: {
+	{
 		title: 'Lorem Ipsum Generator',
+		id: 'loremipsum',
 		component: LoremIpsum,
 	},
-} as Record<string, { title: string; component: unknown }>;
+] as Array<{ title: string; id: string; component: unknown }>;

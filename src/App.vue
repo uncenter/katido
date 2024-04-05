@@ -1,23 +1,43 @@
 <script setup lang="ts">
+import { get } from '@vueuse/core';
+import { useFuse } from '@vueuse/integrations/useFuse';
+
 import tools from './tools';
 
-type Tool = keyof typeof tools;
+type Tool = (typeof tools)[number]['id'];
 
 const tool: Ref<Tool | undefined> = useStorage('tool', undefined);
-const ToolComponent = computed(() => tools[tool.value as Tool].component);
+const ToolComponent = computed(
+	() => tools.find(({ id }) => id === get(tool))!.component,
+);
+
+const input = ref('');
+
+const { results } = useFuse(input, tools, {
+	fuseOptions: {
+		keys: ['title'],
+		isCaseSensitive: false,
+		threshold: 0.2,
+	},
+	matchAllWhenSearchEmpty: true,
+});
 </script>
 
 <template>
 	<aside class="sidebar">
-		<input placeholder="Search..." />
+		<input placeholder="Search..." v-model="input" />
 		<div class="separator" />
 		<ul>
-			<li v-for="(t, key) in tools">
+			<li v-for="result in results" :key="result.item.id">
 				<button
-					@click="tool === key ? (tool = undefined) : (tool = key)"
-					:aria-current="key === tool"
+					@click="
+						tool === result.item.id
+							? (tool = undefined)
+							: (tool = result.item.id)
+					"
+					:aria-current="result.item.id === tool"
 				>
-					{{ t.title }}
+					{{ result.item.title }}
 				</button>
 			</li>
 		</ul>
@@ -25,7 +45,7 @@ const ToolComponent = computed(() => tools[tool.value as Tool].component);
 	<div class="tool">
 		<div v-if="tool !== undefined">
 			<header>
-				<span>{{ tools[tool].title }}</span>
+				<span>{{ tools.find(({ id }) => id === tool)!.title }}</span>
 			</header>
 			<div :class="tool">
 				<ToolComponent />
