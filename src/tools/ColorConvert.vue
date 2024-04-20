@@ -17,7 +17,7 @@ watch(input, update);
 </script>
 
 <template>
-	<section class="flex flex-row gap-2 items-center">
+	<section class="flex flex-row gap-1 items-center">
 		<Input v-model="input" />
 		<Button size="icon" @click="input = random().toHexString()"
 			><Shuffle class="size-4"
