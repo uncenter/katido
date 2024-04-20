@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./public/icon.svg" width="100" />
+  <img src="./assets/katido.png" width="100" />
   <h1>Katido</h1>
 </div>
 
