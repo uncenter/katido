@@ -4,6 +4,18 @@ import type { LoremUnit } from 'lorem-ipsum/types/src/constants/units';
 import { get, set } from '@vueuse/core';
 import { loremIpsum } from 'lorem-ipsum';
 
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import {
+	Select,
+	SelectValue,
+	SelectTrigger,
+	SelectContent,
+	SelectItem,
+} from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { RefreshCw } from 'lucide-vue-next';
+
 const unit = useStorage('loremipsum__unit', 'paragraphs') as Ref<LoremUnit>;
 const count = useStorage('loremipsum__count', 2);
 
@@ -28,35 +40,21 @@ watch([unit, count], update);
 </script>
 
 <template>
-	<section>
-		<input type="number" v-model="count" />
-		<select v-model="unit">
-			<option value="words">words</option>
-			<option value="sentences">sentences</option>
-			<option value="paragraphs">paragraphs</option>
-		</select>
-		<button @click="update">Generate</button>
+	<section class="flex flex-row gap-2">
+		<Input type="number" v-model="count" max="1000" />
+		<Select v-model="unit">
+			<SelectTrigger class="w-[180px]">
+				<SelectValue placeholder="Select a unit" />
+			</SelectTrigger>
+			<SelectContent>
+				<SelectItem value="words">words</SelectItem>
+				<SelectItem value="sentences">sentences</SelectItem>
+				<SelectItem value="paragraphs">paragraphs</SelectItem>
+			</SelectContent>
+		</Select>
+		<Button @click="update" size="icon"
+			><RefreshCw class="size-4"
+		/></Button>
 	</section>
-	<textarea v-model="output" readonly="true"></textarea>
+	<Textarea v-model="output" readonly="true"></Textarea>
 </template>
-
-<style lang="scss">
-.loremipsum {
-	padding: 1rem;
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
-
-	section {
-		display: flex;
-		flex-direction: row;
-		gap: 1ch;
-	}
-
-	textarea {
-		width: auto;
-		height: 80vh;
-		font-size: 0.8rem;
-	}
-}
-</style>

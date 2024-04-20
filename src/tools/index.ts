@@ -1,7 +1,7 @@
-import ColorConvert from './tools/ColorConvert.vue';
-import TextCounter from './tools/TextCounter.vue';
-import DataConvert from './tools/DataConvert/index.vue';
-import LoremIpsum from './tools/LoremIpsum.vue';
+import ColorConvert from './ColorConvert.vue';
+import TextCounter from './TextCounter.vue';
+import DataConvert from './DataConvert/index.vue';
+import LoremIpsum from './LoremIpsum.vue';
 
 export default [
 	{

@@ -1,118 +1,55 @@
 <script setup lang="ts">
-import { get } from '@vueuse/core';
-import { useFuse } from '@vueuse/integrations/useFuse';
+import Tools from './components/Tools.vue';
 
-import tools from './tools';
+import {
+	CommandDialog,
+	CommandEmpty,
+	CommandGroup,
+	CommandInput,
+	CommandItem,
+	CommandList,
+	CommandSeparator,
+} from '@/components/ui/command';
 
-type Tool = (typeof tools)[number]['id'];
+import { useMagicKeys } from '@vueuse/core';
 
-const tool: Ref<Tool | undefined> = useStorage('tool', undefined);
-const ToolComponent = computed(
-	() => tools.find(({ id }) => id === get(tool))!.component,
-);
+const open = ref(false);
 
-const input = ref('');
+const keys = useMagicKeys({
+	passive: false,
+});
 
-const { results } = useFuse(input, tools, {
-	fuseOptions: {
-		keys: ['title'],
-		isCaseSensitive: false,
-		threshold: 0.2,
-	},
-	matchAllWhenSearchEmpty: true,
+whenever(keys.cmd_k, () => {
+	console.log('Cmd+K have been pressed');
+	open.value = !open.value;
 });
 </script>
 
 <template>
-	<aside class="sidebar">
-		<input placeholder="Search..." v-model="input" />
-		<div class="separator" />
-		<ul>
-			<li v-for="result in results" :key="result.item.id">
-				<button
-					@click="
-						tool === result.item.id
-							? (tool = undefined)
-							: (tool = result.item.id)
-					"
-					:aria-current="result.item.id === tool"
-				>
-					{{ result.item.title }}
-				</button>
-			</li>
-		</ul>
-	</aside>
-	<div class="tool">
-		<div v-if="tool !== undefined">
-			<header>
-				<span>{{ tools.find(({ id }) => id === tool)!.title }}</span>
-			</header>
-			<div :class="tool">
-				<ToolComponent />
-			</div>
-		</div>
-	</div>
+	<Tools />
+	<CommandDialog v-model:open="open">
+		<CommandInput placeholder="Type a command or search..." />
+		<CommandList>
+			<CommandEmpty>No results found.</CommandEmpty>
+			<CommandGroup heading="Suggestions">
+				<CommandItem value="calendar"> Calendar </CommandItem>
+				<CommandItem value="search-emoji"> Search Emoji </CommandItem>
+				<CommandItem value="calculator"> Calculator </CommandItem>
+			</CommandGroup>
+			<CommandSeparator />
+			<CommandGroup heading="Settings">
+				<CommandItem value="profile"> Profile </CommandItem>
+				<CommandItem value="billing"> Billing </CommandItem>
+				<CommandItem value="settings"> Settings </CommandItem>
+			</CommandGroup>
+		</CommandList>
+	</CommandDialog>
 </template>
 
 <style lang="scss">
 #app {
 	display: flex;
 	flex-direction: row;
-}
-.sidebar {
-	width: 300px;
-	height: 100vh;
-
-	display: flex;
-	flex-direction: column;
-
-	border-right: 1px solid var(--ctp-surface1);
-
-	input {
-		margin: 1rem;
-	}
-
-	.separator {
-		width: 100%;
-		height: 1px;
-		background-color: var(--ctp-surface1);
-	}
-
-	ul {
-		list-style-type: none;
-		padding: 0.5rem;
-
-		li {
-			padding-top: 0.25rem;
-		}
-
-		button {
-			width: 100%;
-			margin-right: 0.25rem;
-			text-align: left;
-			background-color: var(--ctp-base);
-			border: none;
-
-			&:hover {
-				background-color: var(--ctp-mantle);
-			}
-
-			&[aria-current='true'] {
-				color: var(--ctp-base);
-				background-color: var(--ctp-blue);
-			}
-		}
-	}
-}
-.tool {
-	width: 100%;
-
-	header {
-		border-bottom: 1px solid var(--ctp-surface1);
-		padding-bottom: 1rem;
-		padding-top: 1rem;
-		text-align: center;
-		font-weight: 600;
-	}
+	padding: 1rem;
 }
 </style>

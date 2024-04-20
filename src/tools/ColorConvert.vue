@@ -5,6 +5,8 @@ import { ColorTranslator } from 'colortranslator';
 const input = useStorage('colorconvert__color', '');
 const color: Ref<ColorTranslator | undefined> = ref();
 
+import { Input } from '@/components/ui/input';
+
 function update() {
 	try {
 		set(color, new ColorTranslator(get(input)));
@@ -21,13 +23,12 @@ watch(input, update);
 </script>
 
 <template>
-	<section>
-		<input v-model="input" />
+	<section class="flex flex-row gap-2 items-center">
+		<Input v-model="input" />
 		<div
-			class="indicator"
-			:empty="color === undefined"
+			class="size-10 rounded-full border-solid border-2"
 			:style="{
-				'--color': color?.HEX,
+				'background-color': color?.HEX,
 			}"
 		></div>
 	</section>
@@ -56,59 +57,3 @@ watch(input, update);
 		</table>
 	</div>
 </template>
-
-<style lang="scss">
-.colorconvert {
-	padding: 1rem;
-	display: flex;
-	flex-direction: column;
-	gap: 2rem;
-
-	section {
-		display: flex;
-		flex-direction: row;
-		justify-content: center;
-		align-items: center;
-		gap: 1rem;
-	}
-	.indicator {
-		width: 25px;
-		height: 25px;
-		border-radius: 50%;
-		background-color: var(--color);
-		border: 2px solid transparent;
-
-		&[empty='true'] {
-			background-image: repeating-linear-gradient(
-				45deg,
-				transparent 0,
-				var(--ctp-overlay0) 3px,
-				transparent 0,
-				transparent 20%
-			);
-			border: 2px solid var(--ctp-overlay0);
-		}
-	}
-	code {
-		background-color: var(--ctp-mantle);
-		padding: 0.25rem;
-		border-radius: 0.1rem;
-	}
-	table {
-		table-layout: fixed;
-		border-collapse: collapse;
-		width: 100%;
-
-		&,
-		td,
-		th {
-			border: 1px solid var(--ctp-surface2);
-		}
-
-		td {
-			text-align: right;
-			padding: 0.25rem;
-		}
-	}
-}
-</style>

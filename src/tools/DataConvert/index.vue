@@ -3,7 +3,18 @@ import { set, get } from '@vueuse/core';
 import { formats, langs, type Format } from './lib';
 
 import { getHighlighterCore } from 'shiki/core';
-import catppuccinMacchiato from 'shiki/themes/catppuccin-macchiato.mjs';
+import githubLightTheme from 'shiki/themes/github-light.mjs';
+
+import { Button } from '@/components/ui/button';
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { Upload, Download } from 'lucide-vue-next';
 
 const inputFormat = useStorage(
 	'dataconvert__input-format',
@@ -48,7 +59,7 @@ async function run() {
 		set(parsed, formats[get(inputFormat)].parse(get(text)));
 
 		const highlighter = await getHighlighterCore({
-			themes: [catppuccinMacchiato],
+			themes: [githubLightTheme],
 			langs: langs,
 			loadWasm: () => import('shiki/wasm'),
 		});
@@ -63,7 +74,7 @@ async function run() {
 				highlighted,
 				highlighter.codeToHtml(get(stringified), {
 					lang: get(outputFormat),
-					theme: 'catppuccin-macchiato',
+					theme: 'github-light',
 				}),
 			);
 		} else {
@@ -85,10 +96,12 @@ watch(
 </script>
 
 <template>
-	<section>
-		<div class="toolbar">
-			<button @click="() => open()">Upload</button>
-			<button
+	<section class="flex flex-col gap-2">
+		<div class="flex flex-row gap-1 self-end">
+			<Button @click="() => open()"
+				><Upload class="size-4 mr-2" /> Upload</Button
+			>
+			<Button
 				@click="
 					() => {
 						[inputFormat, outputFormat] = [
@@ -100,18 +113,23 @@ watch(
 				"
 			>
 				Switch
-			</button>
-			<select v-model="inputFormat">
-				<option v-for="(format, key) in formats" :value="key">
-					{{ format.name }}
-				</option>
-			</select>
+			</Button>
+			<Select v-model="inputFormat">
+				<SelectTrigger class="w-[180px]">
+					<SelectValue placeholder="Select an input format" />
+				</SelectTrigger>
+				<SelectContent>
+					<SelectItem v-for="(format, key) in formats" :value="key">
+						{{ format.name }}
+					</SelectItem>
+				</SelectContent>
+			</Select>
 		</div>
-		<textarea v-model="text"></textarea>
+		<Textarea v-model="text"></Textarea>
 	</section>
-	<section>
-		<div class="toolbar">
-			<button
+	<section class="flex flex-col gap-2">
+		<div class="flex flex-row gap-1 self-end">
+			<Button
 				@click="
 					() => {
 						fs.data.value = stringified;
@@ -122,78 +140,32 @@ watch(
 					}
 				"
 			>
-				Download
-			</button>
-			<button @click="copy(stringified)">
+				<Download class="size-4 mr-2" /> Download
+			</Button>
+			<Button @click="copy(stringified)">
 				<span v-if="!copied">Copy</span>
 				<span v-else>Copied!</span>
-			</button>
-			<select v-model="outputFormat">
-				<option
-					v-for="(format, key) in formats"
-					:value="key"
-					:disabled="text !== '' && !format.canStringify(parsed)"
-				>
-					{{ format.name }}
-				</option>
-			</select>
+			</Button>
+			<Select v-model="outputFormat">
+				<SelectTrigger class="w-[180px]">
+					<SelectValue placeholder="Select an output format" />
+				</SelectTrigger>
+				<SelectContent>
+					<SelectItem
+						v-for="(format, key) in formats"
+						:value="key"
+						:disabled="text !== '' && !format.canStringify(parsed)"
+					>
+						{{ format.name }}
+					</SelectItem>
+				</SelectContent>
+			</Select>
 		</div>
 		<div
-			class="output"
+			class="border rounded-md p-2"
 			v-if="highlighted !== null"
 			v-html="highlighted"
 		></div>
-		<div class="output" v-else aria-disabled="true"></div>
+		<div class="border rounded-md" v-else aria-disabled="true"></div>
 	</section>
 </template>
-
-<style lang="scss">
-.dataconvert {
-	padding: 1rem;
-	display: flex;
-	flex-direction: column;
-	gap: 1rem;
-
-	section {
-		display: flex;
-		flex-direction: column;
-		gap: 1rem;
-	}
-
-	div.toolbar {
-		align-self: flex-end;
-		display: flex;
-		flex-direction: row;
-		gap: 0.5rem;
-	}
-
-	textarea {
-		width: auto;
-		height: 30vh;
-		resize: none;
-	}
-
-	div.output {
-		background-color: var(--ctp-base);
-		color: var(--ctp-text);
-		border: 1px solid var(--ctp-surface0);
-		border-radius: 0.25rem;
-		padding: 0.5rem 0.75rem;
-		font-size: 1rem;
-		display: flex;
-		height: 30vh;
-
-		&[aria-disabled='true'] {
-			opacity: 0.5;
-		}
-	}
-	pre {
-		display: flex;
-		width: 100%;
-	}
-	code {
-		width: 100%;
-		overflow: scroll;
-	}
-}
-</style>

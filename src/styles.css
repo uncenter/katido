@@ -1,114 +1,86 @@
-:root[theme='latte'] {
-	color-scheme: light;
-	--ctp-rosewater: #dc8a78;
-	--ctp-flamingo: #dd7878;
-	--ctp-pink: #ea76cb;
-	--ctp-mauve: #8839ef;
-	--ctp-red: #d20f39;
-	--ctp-maroon: #e64553;
-	--ctp-peach: #fe640b;
-	--ctp-yellow: #df8e1d;
-	--ctp-green: #40a02b;
-	--ctp-teal: #179299;
-	--ctp-sky: #04a5e5;
-	--ctp-sapphire: #209fb5;
-	--ctp-blue: #1e66f5;
-	--ctp-lavender: #7287fd;
-	--ctp-text: #4c4f69;
-	--ctp-subtext1: #5c5f77;
-	--ctp-subtext0: #6c6f85;
-	--ctp-overlay2: #7c7f93;
-	--ctp-overlay1: #8c8fa1;
-	--ctp-overlay0: #9ca0b0;
-	--ctp-surface2: #acb0be;
-	--ctp-surface1: #bcc0cc;
-	--ctp-surface0: #ccd0da;
-	--ctp-base: #eff1f5;
-	--ctp-mantle: #e6e9ef;
-	--ctp-crust: #dce0e8;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	:root {
+		--background: 0 0% 100%;
+		--foreground: 222.2 84% 4.9%;
+
+		--muted: 210 40% 96.1%;
+		--muted-foreground: 215.4 16.3% 46.9%;
+
+		--popover: 0 0% 100%;
+		--popover-foreground: 222.2 84% 4.9%;
+
+		--card: 0 0% 100%;
+		--card-foreground: 222.2 84% 4.9%;
+
+		--border: 214.3 31.8% 91.4%;
+		--input: 214.3 31.8% 91.4%;
+
+		--primary: 222.2 47.4% 11.2%;
+		--primary-foreground: 210 40% 98%;
+
+		--secondary: 210 40% 96.1%;
+		--secondary-foreground: 222.2 47.4% 11.2%;
+
+		--accent: 210 40% 96.1%;
+		--accent-foreground: 222.2 47.4% 11.2%;
+
+		--destructive: 0 84.2% 60.2%;
+		--destructive-foreground: 210 40% 98%;
+
+		--ring: 222.2 84% 4.9%;
+
+		--radius: 0.5rem;
+	}
+
+	.dark {
+		--background: 222.2 84% 4.9%;
+		--foreground: 210 40% 98%;
+
+		--muted: 217.2 32.6% 17.5%;
+		--muted-foreground: 215 20.2% 65.1%;
+
+		--popover: 222.2 84% 4.9%;
+		--popover-foreground: 210 40% 98%;
+
+		--card: 222.2 84% 4.9%;
+		--card-foreground: 210 40% 98%;
+
+		--border: 217.2 32.6% 17.5%;
+		--input: 217.2 32.6% 17.5%;
+
+		--primary: 210 40% 98%;
+		--primary-foreground: 222.2 47.4% 11.2%;
+
+		--secondary: 217.2 32.6% 17.5%;
+		--secondary-foreground: 210 40% 98%;
+
+		--accent: 217.2 32.6% 17.5%;
+		--accent-foreground: 210 40% 98%;
+
+		--destructive: 0 62.8% 30.6%;
+		--destructive-foreground: 210 40% 98%;
+
+		--ring: 212.7 26.8% 83.9%;
+	}
 }
 
-:root[theme='macchiato'] {
-	color-scheme: dark;
-	--ctp-rosewater: #f4dbd6;
-	--ctp-flamingo: #f0c6c6;
-	--ctp-pink: #f5bde6;
-	--ctp-mauve: #c6a0f6;
-	--ctp-red: #ed8796;
-	--ctp-maroon: #ee99a0;
-	--ctp-peach: #f5a97f;
-	--ctp-yellow: #eed49f;
-	--ctp-green: #a6da95;
-	--ctp-teal: #8bd5ca;
-	--ctp-sky: #91d7e3;
-	--ctp-sapphire: #7dc4e4;
-	--ctp-blue: #8aadf4;
-	--ctp-lavender: #b7bdf8;
-	--ctp-text: #cad3f5;
-	--ctp-subtext1: #b8c0e0;
-	--ctp-subtext0: #a5adcb;
-	--ctp-overlay2: #939ab7;
-	--ctp-overlay1: #8087a2;
-	--ctp-overlay0: #6e738d;
-	--ctp-surface2: #5b6078;
-	--ctp-surface1: #494d64;
-	--ctp-surface0: #363a4f;
-	--ctp-base: #24273a;
-	--ctp-mantle: #1e2030;
-	--ctp-crust: #181926;
-}
-
-:root {
-	color: var(--ctp-text);
-	background-color: var(--ctp-base);
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 1rem;
-	line-height: 24px;
-	font-weight: 400;
-	caret-color: var(--ctp-text);
-}
-
-body {
-	margin: 0;
-}
-
-button {
-	background-color: var(--ctp-mantle);
-	color: var(--ctp-text);
-	border: 1px solid var(--ctp-surface0);
-	border-radius: 0.25rem;
-	padding: 0.5rem 0.75rem;
-}
-button:hover {
-	cursor: pointer;
-}
-
-input,
-textarea {
-	background-color: var(--ctp-mantle);
-	color: var(--ctp-text);
-	border: 1px solid var(--ctp-surface0);
-	border-radius: 0.25rem;
-	padding: 0.5rem 0.75rem;
-	font-size: 1rem;
-	resize: none;
-}
-
-input::placeholder,
-textarea::placeholder {
-	color: var(--ctp-subtext0);
-}
-
-input:focus-visible,
-textarea:focus-visible {
-	outline: var(--ctp-mauve) solid 2px;
-}
-
-select {
-	width: fit-content;
-	background-color: var(--ctp-mantle);
-	color: var(--ctp-text);
-	border: 1px solid var(--ctp-surface0);
-	border-radius: 0.25rem;
-	padding: 0.25rem;
+@layer base {
+	* {
+		@apply border-border;
+	}
+	body {
+		@apply bg-background text-foreground;
+	}
+	:root,
+	body,
+	#app {
+		height: 100%;
+	}
+	textarea {
+		resize: none;
+	}
 }

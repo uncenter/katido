@@ -2,6 +2,17 @@
 import { get, set } from '@vueuse/core';
 import { pluralize } from '../utils.ts';
 
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from '@/components/ui/card';
+
 const { open, onChange } = useFileDialog({
 	accept: 'text/*',
 	multiple: false,
@@ -36,22 +47,24 @@ watch(text, count);
 </script>
 
 <template>
-	<button @click="() => open()">Load file</button>
-	<textarea v-model="text"></textarea>
-	<ul>
-		<li>
-			{{ counts.characters }}
-			{{ pluralize('character', counts.characters) }}
-		</li>
-		<li>
-			{{ counts.words }}
-			{{ pluralize('word', counts.words) }}
-		</li>
-		<li>
-			{{ counts.lines }}
-			{{ pluralize('line', counts.lines) }}
-		</li>
-	</ul>
+	<Button @click="() => open()">Load file</Button>
+	<Textarea v-model="text"></Textarea>
+	<div class="border rounded-md p-4">
+		<ul>
+			<li>
+				{{ counts.characters }}
+				{{ pluralize('character', counts.characters) }}
+			</li>
+			<li>
+				{{ counts.words }}
+				{{ pluralize('word', counts.words) }}
+			</li>
+			<li>
+				{{ counts.lines }}
+				{{ pluralize('line', counts.lines) }}
+			</li>
+		</ul>
+	</div>
 </template>
 
 <style>
