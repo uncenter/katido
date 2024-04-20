@@ -9,13 +9,13 @@
 		"format": "prettier --write ."
 	},
 	"dependencies": {
+		"@ctrl/tinycolor": "^4.1.0",
 		"@tauri-apps/api": "^1",
 		"@vueuse/core": "^10.9.0",
 		"@vueuse/integrations": "^10.9.0",
 		"buffer": "^6.0.3",
 		"class-variance-authority": "^0.7.0",
 		"clsx": "^2.1.0",
-		"colortranslator": "^4.1.0",
 		"csv-parse": "^5.5.5",
 		"csv-stringify": "^6.4.6",
 		"fuse.js": "^6",
