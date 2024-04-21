@@ -20,7 +20,7 @@ export default [
 		component: DataConvert,
 	},
 	{
-		title: 'Lorem Ipsum Generator',
+		title: 'Lorem Ipsum',
 		id: 'loremipsum',
 		component: LoremIpsum,
 	},

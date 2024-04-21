@@ -41,7 +41,7 @@ watch([unit, count], update);
 
 <template>
 	<section class="flex flex-row gap-2">
-		<Input type="number" v-model="count" max="1000" />
+		<Input type="number" v-model="count" min="1" max="1000" />
 		<Select v-model="unit">
 			<SelectTrigger class="w-[180px]">
 				<SelectValue placeholder="Select a unit" />
